@@ -1,0 +1,46 @@
+[package]
+name = "plexus-loom"
+version = "0.1.0"
+edition = "2024"
+description = "A unified facade for the Plexus-Loom backend: graph modeling, weaving, signals, runtime, and storage — one dependency, feature-gated subsystems."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/plexus-loom/plexus-loom"
+readme = "README.md"
+keywords = ["graph", "reactive", "runtime", "loom", "plexus"]
+categories = ["data-structures", "asynchronous"]
+
+[features]
+default = ["core", "domain", "weave", "signals"]
+
+# Foundational primitives: typed IDs, SPC encoding, types, Value.
+core = ["dep:plexus-core"]
+
+# Graph storage traits + in-memory store + domain model.
+domain = ["core", "dep:loom-core", "dep:loom-domain"]
+
+# Stateless block assembly and validation.
+weave = ["domain", "dep:loom-weave"]
+
+# Pull-based reactive primitives.
+signals = ["core", "dep:plexus-signal"]
+
+# Async execution runtime (Graph, Executor, Scheduler).
+runtime = ["weave", "signals", "dep:plexus-engine"]
+
+# Durable on-disk storage backend.
+storage = ["domain", "dep:plexus-persistence"]
+
+# Everything.
+all = ["runtime", "storage"]
+
+# Forward in-memory store from loom-core.
+in-memory = ["domain", "loom-core?/in-memory"]
+
+[dependencies]
+plexus-core      = { version = "0.1.0", path = "../plexus-core",      optional = true }
+loom-core        = { version = "0.1.0", path = "../loom-core",        optional = true }
+loom-domain      = { version = "0.1.0", path = "../loom-domain",      optional = true }
+loom-weave       = { version = "0.1.0", path = "../loom-weave",       optional = true }
+plexus-signal    = { version = "0.1.0", path = "../plexus-signal",    optional = true }
+plexus-engine    = { version = "0.1.0", path = "../plexus-engine",    optional = true }
+plexus-persistence = { version = "0.1.0", path = "../plexus-persistence", optional = true }
