@@ -13,10 +13,10 @@ categories = ["data-structures", "asynchronous"]
 default = ["core", "domain", "weave", "signals"]
 
 # Foundational primitives: typed IDs, SPC encoding, types, Value.
-core = ["dep:plexus-core"]
+core = ["dep:plexus-base"]
 
 # Graph storage traits + in-memory store + domain model.
-domain = ["core", "dep:loom-core", "dep:loom-domain"]
+domain = ["core", "dep:loom-base", "dep:loom-domain"]
 
 # Stateless block assembly and validation.
 weave = ["domain", "dep:loom-weave"]
@@ -33,12 +33,12 @@ storage = ["domain", "dep:plexus-persistence"]
 # Everything.
 all = ["runtime", "storage"]
 
-# Forward in-memory store from loom-core.
-in-memory = ["domain", "loom-core?/in-memory"]
+# Forward in-memory store from loom-base.
+in-memory = ["domain", "loom-base?/in-memory"]
 
 [dependencies]
-plexus-core      = { version = "0.1.0", path = "../plexus-core",      optional = true }
-loom-core        = { version = "0.1.0", path = "../loom-core",        optional = true }
+plexus-base      = { version = "0.1.0", path = "../plexus-core",      optional = true }
+loom-base        = { version = "0.1.0", path = "../loom-base",        optional = true }
 loom-domain      = { version = "0.1.0", path = "../loom-domain",      optional = true }
 loom-weave       = { version = "0.1.0", path = "../loom-weave",       optional = true }
 plexus-signal    = { version = "0.1.0", path = "../plexus-signal",    optional = true }

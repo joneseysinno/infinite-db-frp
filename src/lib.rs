@@ -52,7 +52,7 @@
 /// Available with feature `core` (default).
 #[cfg(feature = "core")]
 pub mod core {
-    pub use plexus_core::{
+    pub use plexus_base::{
         // Identifiers
         AtomId, BlockId, EdgeId, GraphId, IdGen, PortId,
         // Spatial encoding
@@ -73,7 +73,7 @@ pub mod core {
 /// Available with feature `domain` (default).
 #[cfg(feature = "domain")]
 pub mod store {
-    pub use loom_core::{
+    pub use loom_base::{
         // Error
         StoreError,
         // Pagination
@@ -87,7 +87,7 @@ pub mod store {
     /// Available with feature `in-memory`.
     #[cfg(feature = "in-memory")]
     pub mod memory {
-        pub use loom_core::{
+        pub use loom_base::{
             HasAtomId, HasBlockId, HasEdgeId,
             InMemoryAtomStore, InMemoryBlockStore, InMemoryEdgeStore,
         };
