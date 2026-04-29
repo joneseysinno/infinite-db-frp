@@ -1,46 +1,46 @@
 [package]
-name = "plexus-loom"
+name = "infinite-db-frp"
 version = "0.1.0"
 edition = "2024"
-description = "A unified facade for the Plexus-Loom backend: graph modeling, weaving, signals, runtime, and storage — one dependency, feature-gated subsystems."
+description = "A unified facade for the infinite-db frp backend: graph modeling, weaving, signals, runtime, and storage with feature-gated subsystems."
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/joneseysinno/plexus-loom.git"
+repository = "https://github.com/joneseysinno/infinite-db-frp.git"
 readme = "README.md"
-keywords = ["graph", "reactive", "runtime", "loom", "plexus"]
+keywords = ["graph", "reactive", "runtime", "frp", "infinite-db"]
 categories = ["data-structures", "asynchronous"]
 
 [features]
 default = ["core", "domain", "weave", "signals"]
 
 # Foundational primitives: typed IDs, SPC encoding, types, Value.
-core = ["dep:plexus-base"]
+core = ["dep:frp-plexus"]
 
 # Graph storage traits + in-memory store + domain model.
-domain = ["core", "dep:loom-base", "dep:loom-domain"]
+domain = ["core", "dep:frp-loom", "dep:frp-domain"]
 
 # Stateless block assembly and validation.
-weave = ["domain", "dep:loom-weave"]
+weave = ["domain", "dep:frp-weave"]
 
 # Pull-based reactive primitives.
-signals = ["core", "dep:plexus-signal"]
+signals = ["core", "dep:frp-signal"]
 
 # Async execution runtime (Graph, Executor, Scheduler).
-runtime = ["weave", "signals", "dep:plexus-engine"]
+runtime = ["weave", "signals", "dep:frp-engine"]
 
 # Durable on-disk storage backend.
-storage = ["domain", "dep:plexus-persistence"]
+storage = ["domain", "dep:frp-persistence"]
 
 # Everything.
 all = ["runtime", "storage"]
 
-# Forward in-memory store from loom-base.
-in-memory = ["domain", "loom-base?/in-memory"]
+# Forward in-memory store from frp-loom.
+in-memory = ["domain", "frp-loom?/in-memory"]
 
 [dependencies]
-plexus-base      = { version = "0.1.0", path = "../plexus-core",      optional = true }
-loom-base        = { version = "0.1.0", path = "../loom-base",        optional = true }
-loom-domain      = { version = "0.1.0", path = "../loom-domain",      optional = true }
-loom-weave       = { version = "0.1.0", path = "../loom-weave",       optional = true }
-plexus-signal    = { version = "0.1.0", path = "../plexus-signal",    optional = true }
-plexus-engine    = { version = "0.1.0", path = "../plexus-engine",    optional = true }
-plexus-persistence = { version = "0.1.0", path = "../plexus-persistence", optional = true }
+frp-plexus       = { version = "0.1.0", path = "../frp-plexus",       optional = true }
+frp-loom         = { version = "0.1.0", path = "../frp-loom",         optional = true }
+frp-domain       = { version = "0.1.0", path = "../frp-domain",       optional = true }
+frp-weave        = { version = "0.1.0", path = "../frp-weave",        optional = true }
+frp-signal       = { version = "0.1.0", path = "../frp-signal",       optional = true }
+frp-engine       = { version = "0.1.0", path = "../frp-engine",       optional = true }
+frp-persistence  = { version = "0.1.0", path = "../frp-persistence",  optional = true }

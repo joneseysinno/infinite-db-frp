@@ -1,22 +1,22 @@
-//! # plexus-loom
+//! # infinite-db-frp
 //!
-//! A unified facade for the Plexus-Loom backend.
+//! A unified facade for the infinite-db frp backend.
 //!
 //! Add a single dependency to your project and opt into subsystems via feature flags:
 //!
 //! ```toml
 //! [dependencies]
 //! # Light defaults: core primitives + domain model + weaving + reactive signals
-//! plexus-loom = "0.1"
+//! infinite-db-frp = "0.1"
 //!
 //! # Opt into the async execution runtime
-//! plexus-loom = { version = "0.1", features = ["runtime"] }
+//! infinite-db-frp = { version = "0.1", features = ["runtime"] }
 //!
 //! # Opt into durable on-disk storage
-//! plexus-loom = { version = "0.1", features = ["storage"] }
+//! infinite-db-frp = { version = "0.1", features = ["storage"] }
 //!
 //! # Everything
-//! plexus-loom = { version = "0.1", features = ["all"] }
+//! infinite-db-frp = { version = "0.1", features = ["all"] }
 //! ```
 //!
 //! ## Feature flags
@@ -52,7 +52,7 @@
 /// Available with feature `core` (default).
 #[cfg(feature = "core")]
 pub mod core {
-    pub use plexus_base::{
+    pub use frp_plexus::{
         // Identifiers
         AtomId, BlockId, EdgeId, GraphId, IdGen, PortId,
         // Spatial encoding
@@ -68,12 +68,12 @@ pub mod core {
 // store
 // ---------------------------------------------------------------------------
 
-/// Storage traits and in-memory implementations for the Loom graph layer.
+/// Storage traits and in-memory implementations for the frp graph layer.
 ///
 /// Available with feature `domain` (default).
 #[cfg(feature = "domain")]
 pub mod store {
-    pub use loom_base::{
+    pub use frp_loom::{
         // Error
         StoreError,
         // Pagination
@@ -87,7 +87,7 @@ pub mod store {
     /// Available with feature `in-memory`.
     #[cfg(feature = "in-memory")]
     pub mod memory {
-        pub use loom_base::{
+        pub use frp_loom::{
             HasAtomId, HasBlockId, HasEdgeId,
             InMemoryAtomStore, InMemoryBlockStore, InMemoryEdgeStore,
         };
@@ -103,7 +103,7 @@ pub mod store {
 /// Available with feature `domain` (default).
 #[cfg(feature = "domain")]
 pub mod domain {
-    pub use loom_domain::{
+    pub use frp_domain::{
         // Atoms
         Atom, AtomKind, AtomMeta,
         // Blocks
@@ -128,7 +128,7 @@ pub mod domain {
 /// Available with feature `weave` (default).
 #[cfg(feature = "weave")]
 pub mod weave {
-    pub use loom_weave::{
+    pub use frp_weave::{
         // Archetypes
         Archetype, ArchetypeRegistry,
         // Templates
@@ -149,7 +149,7 @@ pub mod weave {
 /// Available with feature `signals` (default).
 #[cfg(feature = "signals")]
 pub mod signal {
-    pub use plexus_signal::{
+    pub use frp_signal::{
         Computed, DirtySet, DirtySink, Signal, SignalSubscribable, Slot,
     };
 }
@@ -171,13 +171,13 @@ pub mod signal {
 /// Advanced internals (transforms, toposort) are available via [`engine::advanced`].
 #[cfg(feature = "runtime")]
 pub mod engine {
-    pub use plexus_engine::{
+    pub use frp_engine::{
         EngineError, Executor, Graph, Scheduler,
     };
 
     /// Advanced / low-level engine utilities.
     pub mod advanced {
-        pub use plexus_engine::{
+        pub use frp_engine::{
             BoxFuture, TransformRegistry, eval_transform, toposort,
         };
     }
@@ -192,5 +192,5 @@ pub mod engine {
 /// Available with feature `storage`.
 #[cfg(feature = "storage")]
 pub mod persistence {
-    pub use plexus_persistence::{InfiniteDbStore, PersistenceError};
+    pub use frp_persistence::{InfiniteDbStore, PersistenceError};
 }

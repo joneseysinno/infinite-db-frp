@@ -1,6 +1,6 @@
-# plexus-loom
+# infinite-db-frp
 
-A unified facade for the Plexus-Loom backend: graph modeling, weaving,
+A unified facade for the infinite-db frp backend: graph modeling, weaving,
 reactive signals, async execution runtime, and durable storage — one
 dependency, feature-gated subsystems.
 
@@ -9,16 +9,16 @@ dependency, feature-gated subsystems.
 ```toml
 [dependencies]
 # Light defaults: core primitives + domain model + block weaving + reactive signals
-plexus-loom = "0.1"
+infinite-db-frp = "0.1"
 
 # Opt into the async execution runtime
-plexus-loom = { version = "0.1", features = ["runtime"] }
+infinite-db-frp = { version = "0.1", features = ["runtime"] }
 
 # Opt into durable on-disk storage
-plexus-loom = { version = "0.1", features = ["storage"] }
+infinite-db-frp = { version = "0.1", features = ["storage"] }
 
 # Everything
-plexus-loom = { version = "0.1", features = ["all"] }
+infinite-db-frp = { version = "0.1", features = ["all"] }
 ```
 
 ## Feature flags
