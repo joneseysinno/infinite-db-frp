@@ -1,8 +1,8 @@
 [package]
 name = "infinite-db-frp"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
-description = "A unified facade for the infinite-db frp backend: graph modeling, weaving, signals, runtime, and storage with feature-gated subsystems."
+description = "A unified facade for the infinite-db frp backend: graph modeling, weaving, reactive signals, and async execution — feature-gated subsystems."
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/joneseysinno/infinite-db-frp.git"
 readme = "README.md"
@@ -27,11 +27,8 @@ signals = ["core", "dep:frp-signal"]
 # Async execution runtime (Graph, Executor, Scheduler).
 runtime = ["weave", "signals", "dep:frp-engine"]
 
-# Durable on-disk storage backend.
-storage = ["domain", "dep:frp-persistence"]
-
-# Everything.
-all = ["runtime", "storage"]
+# Runtime plus in-memory stores (no on-disk persistence in this facade).
+all = ["runtime", "in-memory"]
 
 # Forward in-memory store from frp-loom.
 in-memory = ["domain", "frp-loom?/in-memory"]
@@ -43,4 +40,3 @@ frp-domain       = { version = "0.1.0", path = "../frp-domain",       optional =
 frp-weave        = { version = "0.1.0", path = "../frp-weave",        optional = true }
 frp-signal       = { version = "0.1.0", path = "../frp-signal",       optional = true }
 frp-engine       = { version = "0.1.0", path = "../frp-engine",       optional = true }
-frp-persistence  = { version = "0.1.0", path = "../frp-persistence",  optional = true }

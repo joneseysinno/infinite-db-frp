@@ -1,22 +1,37 @@
 //! # infinite-db-frp
 //!
-//! A unified facade for the infinite-db frp backend.
+//! A unified facade for **modeling and executing** functional-reactive graphs
+//! that align with an [infinite-db](https://github.com/joneseysinno/infinitedb)
+//!–backed executable database.
 //!
-//! Add a single dependency to your project and opt into subsystems via feature flags:
+//! This crate is **read + execute oriented**: it re-exports domain types,
+//! weaving, pull-based reactive primitives, and (optionally) the async graph
+//! runtime. **Loading** snapshot data from `infinite-db` is expected via your
+//! app, [`frp-persistence`], or Hyperblock — not through this facade.
+//!
+//! ## Vocabulary
+//!
+//! - **infinite-db** uses *Hyperedge* and *Signal* for spatial linkage and
+//!   scoped fields in the database engine.
+//! - This facade’s **[`domain::HyperEdge`]** is the **FRP dataflow** edge
+//!   (multi-port → transform → multi-port). The **[`signal`]** module is
+//!   **pull-based** reactive plumbing (`Signal`, `Computed`, …), not the DB
+//!   `Signal` type.
+//!
+//! Keep those names distinct when wiring storage to the runtime.
+//!
+//! ## Dependencies
 //!
 //! ```toml
 //! [dependencies]
-//! # Light defaults: core primitives + domain model + weaving + reactive signals
-//! infinite-db-frp = "0.1"
+//! # Defaults: core + domain + weave + signals
+//! infinite-db-frp = "0.2"
 //!
-//! # Opt into the async execution runtime
-//! infinite-db-frp = { version = "0.1", features = ["runtime"] }
+//! # Async graph execution
+//! infinite-db-frp = { version = "0.2", features = ["runtime"] }
 //!
-//! # Opt into durable on-disk storage
-//! infinite-db-frp = { version = "0.1", features = ["storage"] }
-//!
-//! # Everything
-//! infinite-db-frp = { version = "0.1", features = ["all"] }
+//! # Runtime + in-memory stores (everything this facade offers)
+//! infinite-db-frp = { version = "0.2", features = ["all"] }
 //! ```
 //!
 //! ## Feature flags
@@ -28,9 +43,8 @@
 //! | `weave`     | Block assembly and validation                    | yes     |
 //! | `signals`   | Pull-based reactive primitives                   | yes     |
 //! | `runtime`   | Async graph execution (Graph, Executor, Scheduler) | no   |
-//! | `storage`   | Durable on-disk storage (InfiniteDbStore)         | no     |
 //! | `in-memory` | In-memory store implementations                  | no     |
-//! | `all`       | All of the above                                  | no     |
+//! | `all`       | `runtime` + `in-memory`                          | no     |
 //!
 //! ## Modules
 //!
@@ -40,7 +54,8 @@
 //! - [`weave`] — block assembly and validation *(feature `weave`)*
 //! - [`signal`] — reactive primitives *(feature `signals`)*
 //! - [`engine`] — execution runtime *(feature `runtime`)*
-//! - [`persistence`] — durable storage backend *(feature `storage`)*
+//!
+//! [`frp-persistence`]: https://crates.io/crates/frp-persistence
 
 // ---------------------------------------------------------------------------
 // core
@@ -181,16 +196,4 @@ pub mod engine {
             BoxFuture, TransformRegistry, eval_transform, toposort,
         };
     }
-}
-
-// ---------------------------------------------------------------------------
-// persistence
-// ---------------------------------------------------------------------------
-
-/// Durable on-disk storage backend.
-///
-/// Available with feature `storage`.
-#[cfg(feature = "storage")]
-pub mod persistence {
-    pub use frp_persistence::{InfiniteDbStore, PersistenceError};
 }

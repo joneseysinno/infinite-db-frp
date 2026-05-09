@@ -1,24 +1,25 @@
 # infinite-db-frp
 
-A unified facade for the infinite-db frp backend: graph modeling, weaving,
-reactive signals, async execution runtime, and durable storage — one
-dependency, feature-gated subsystems.
+A unified facade for the infinite-db FRP backend: **graph modeling, weaving,
+reactive signals, and async execution** — one dependency, feature-gated
+subsystems.
+
+This crate is **read + execute oriented**. It does **not** bundle on-disk
+persistence; depend on [`frp-persistence`](https://crates.io/crates/frp-persistence)
+(or Hyperblock) to write and read [`infinite-db`](https://github.com/joneseysinno/infinitedb).
 
 ## Quick start
 
 ```toml
 [dependencies]
-# Light defaults: core primitives + domain model + block weaving + reactive signals
-infinite-db-frp = "0.1"
+# Defaults: core + domain + weave + signals
+infinite-db-frp = "0.2"
 
-# Opt into the async execution runtime
-infinite-db-frp = { version = "0.1", features = ["runtime"] }
+# Async graph execution
+infinite-db-frp = { version = "0.2", features = ["runtime"] }
 
-# Opt into durable on-disk storage
-infinite-db-frp = { version = "0.1", features = ["storage"] }
-
-# Everything
-infinite-db-frp = { version = "0.1", features = ["all"] }
+# Runtime + in-memory stores (everything this facade offers)
+infinite-db-frp = { version = "0.2", features = ["all"] }
 ```
 
 ## Feature flags
@@ -30,23 +31,29 @@ infinite-db-frp = { version = "0.1", features = ["all"] }
 | `weave`     | Block assembly (`Composer`) and validation         | yes     |
 | `signals`   | Pull-based reactive primitives (`Signal`, `Slot`)  | yes     |
 | `runtime`   | Async graph execution (`Graph`, `Executor`)        | no      |
-| `storage`   | Durable on-disk storage (`InfiniteDbStore`)        | no      |
 | `in-memory` | In-memory store implementations                   | no      |
-| `all`       | All of the above                                   | no      |
+| `all`       | `runtime` + `in-memory`                            | no      |
 
 ## Modules
 
-| Module          | Feature     | Contents                                      |
-|-----------------|-------------|-----------------------------------------------|
-| `core`          | `core`      | `AtomId`, `Value`, `SpcKey`, `TypeSig`, …     |
-| `store`         | `domain`    | `AtomStore`, `BlockStore`, `EdgeStore`, …     |
-| `store::memory` | `in-memory` | `InMemoryAtomStore`, `InMemoryBlockStore`, …  |
-| `domain`        | `domain`    | `Atom`, `Block`, `HyperEdge`, `Port`, …       |
-| `weave`         | `weave`     | `Composer`, `Validator`, `Archetype`, …       |
-| `signal`        | `signals`   | `Signal`, `Computed`, `Slot`, `DirtySet`, …   |
-| `engine`        | `runtime`   | `Graph`, `Executor`, `Scheduler`              |
-| `engine::advanced` | `runtime` | `TransformRegistry`, `toposort`, …          |
-| `persistence`   | `storage`   | `InfiniteDbStore`, `PersistenceError`         |
+| Module             | Feature     | Contents                                      |
+|--------------------|-------------|-----------------------------------------------|
+| `core`             | `core`      | `AtomId`, `Value`, `SpcKey`, `TypeSig`, …     |
+| `store`            | `domain`    | `AtomStore`, `BlockStore`, `EdgeStore`, …     |
+| `store::memory`    | `in-memory` | `InMemoryAtomStore`, `InMemoryBlockStore`, …  |
+| `domain`           | `domain`    | `Atom`, `Block`, `HyperEdge`, `Port`, …       |
+| `weave`            | `weave`     | `Composer`, `Validator`, `Archetype`, …       |
+| `signal`           | `signals`   | `Signal`, `Computed`, `Slot`, `DirtySet`, …   |
+| `engine`           | `runtime`   | `Graph`, `Executor`, `Scheduler`              |
+| `engine::advanced` | `runtime`   | `TransformRegistry`, `toposort`, …          |
+
+## Persisting / authoring
+
+- **Executable database:** [infinite-db](https://github.com/joneseysinno/infinitedb)
+- **Rust store implementation:** add `frp-persistence` for `InfiniteDbStore`
+  and trait-based put/get against on-disk storage.
+- **Authoring stacks:** Hyperblock (or similar) should write the canonical
+  snapshot; this facade focuses on types and runtime execution.
 
 ## License
 
